@@ -1,0 +1,40 @@
+ubicacion:BodegaX
+Uvas 715.0
+Mangos 60.0
+Fresas 405.0
+ubicacion:BodegaY
+Peras 243.75
+Manzanas 180.0
+Plátanos 112.5
+ubicacion:BodegaZ
+Naranjas 200.0
+Fresas 198.00000000000003
+Melones 137.5
+ubicacion:BodegaA
+Sandías 360.0
+Papayas 101.25
+Duraznos 246.5
+ubicacion:BodegaB
+Cerezas 233.75
+Limones 139.75
+Moras 152.0
+ubicacion:BodegaC
+Uvas 550.0
+Mangos 60.0
+Fresas 405.0
+ubicacion:BodegaD
+Peras 243.75
+Manzanas 180.0
+Plátanos 112.5
+ubicacion:BodegaE
+Naranjas 200.0
+Kiwis 337.5
+Melones 137.5
+ubicacion:BodegaF
+Sandías 280.0
+Papayas 101.25
+Duraznos 246.5
+ubicacion:BodegaG
+Cerezas 233.75
+Limones 139.75
+Moras 152.0
