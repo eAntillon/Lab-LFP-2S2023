@@ -1,3 +1,10 @@
+from collections import namedtuple
+from Expresiones import *
+from Expresiones.aritmeticas import ExpresionAritmetica
+from Expresiones.trigonometricas import ExpresionTrigonometrica
+
+Token = namedtuple("Token", ["value", "line", "col"])
+
 # numero de linea
 line = 1
 # numero de columna
@@ -9,7 +16,6 @@ tokens = []
 # formar un string
 def tokenize_string(input_str, i):
     token = ""
-    print("POSICION: ", i)
     for char in input_str:
         if char == '"':
             return [token, i]
@@ -18,17 +24,26 @@ def tokenize_string(input_str, i):
     print("Error: string no cerrado")
 
 
+# formar un numero
 def tokenize_number(input_str, i):
     token = ""
+    isDecimal = False
     for char in input_str:
-        if char.isdigit() or char == ".":
+        if char.isdigit():
             token += char
             i += 1
+        elif char == "." and not isDecimal:
+            token += char
+            i += 1
+            isDecimal = True
         else:
             break
-    return [token, i]
+    if isDecimal:
+        return [float(token), i]
+    return [int(token), i]
 
 
+# formar los tokens
 def tokenize_input(input_str):
     # referenciar las variables globales
     global line, col, tokens
@@ -38,11 +53,11 @@ def tokenize_input(input_str):
     while i < len(input_str):
         # obtener el caracter actual
         char = input_str[i]
-        print({"char": char, "line": line, "col": col, "i": i})
         if char.isspace():
             # si es un salto de linea
             if char == "\n":
-                tokens.append("EOL")
+                # print({"char": char, "line": line, "col": col, "i": i})
+                # tokens.append("EOL")
                 line += 1
                 col = 1
             # si es un tabulador
@@ -55,20 +70,23 @@ def tokenize_input(input_str):
             i += 1
         # si es un string formar el token
         elif char == '"':
-            token, pos = tokenize_string(input_str[i + 1 :], i)
+            string, pos = tokenize_string(input_str[i + 1 :], i)
+            col += len(string) + 1
             i = pos + 2
-            print("SALIDA:", i)
+            token = Token(string, line, col)
             tokens.append(token)
-            col += len(token) + 1
         elif char in ["{", "}", "[", "]", ",", ":"]:
-            tokens.append(char)
+            print({"char": char, "line": line, "col": col, "i": i})
             col += 1
             i += 1
-        elif char.isdigit():
-            token, pos = tokenize_number(input_str[i:], i)
-            i = pos + 1
+            token = Token(char, line, col)
             tokens.append(token)
-            col += len(token) + 1
+        elif char.isdigit():
+            number, pos = tokenize_number(input_str[i:], i)
+            col += pos - i
+            i = pos
+            token = Token(number, line, col)
+            tokens.append(token)
         else:
             print(
                 "Error: caracter desconocido:",
@@ -82,7 +100,60 @@ def tokenize_input(input_str):
             col += 1
 
 
+# crear las instrucciones a partir de los tokens
+def get_instruccion():
+    global tokens
+    operacion = None
+    value1 = None
+    value2 = None
+    while tokens:
+        token = tokens.pop(0)
+        print("VALUE: ", token)
+        if token.value == "operacion":
+            # eliminar el :
+            tokens.pop(0)
+            operacion = tokens.pop(0).value
+        elif token.value == "valor1":
+            # eliminar el :
+            tokens.pop(0)
+            value1 = tokens.pop(0).value
+            if value1 == "[":
+                value1 = get_instruccion()
+        elif token.value == "valor2":
+            # eliminar el :
+            tokens.pop(0)
+            value2 = tokens.pop(0).value
+            if value2 == "[":
+                value2 = get_instruccion()
+        else:
+            print("\033[1;31;40m Error: token desconocido:", token, "\033[0m")
+
+        if operacion and value1 and value2:
+            return ExpresionAritmetica(operacion, value1, value2, 0, 0)
+        if operacion and operacion in ["seno"] and value1:
+            return ExpresionTrigonometrica(operacion, value1, 0, 0)
+    return None
+
+
 entrada = open("ejemplo_entrada.json", "r").read()
 tokenize_input(entrada)
-for i in tokens:
-    print("Token: ", i)
+
+
+def create_instructions():
+    global tokens
+    instrucciones = []
+    while tokens:
+        instruccion = get_instruccion()
+        if instruccion:
+            instrucciones.append(instruccion)
+    return instrucciones
+
+
+# for i in tokens:
+#     print(i)
+instrucciones = create_instructions()
+print("INSTRUCCIONES: ", instrucciones)
+for i in instrucciones:
+    print("RESULTADO INSTRUCCION: ", i.interpretar())
+
+
