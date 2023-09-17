@@ -1,0 +1,34 @@
+// Graph 20230916-114429
+digraph {
+	node [fillcolor=cornflowerblue fontcolor=cyan shape=circle style=filled]
+	node [fillcolor=cornflowerblue fontcolor=cyan shape=septagon style=filled]
+	nodo48 [label=10]
+	nodo49 [label=2]
+	nodo50 [label=3.324]
+	nodo51 [label="suma\n5"]
+	nodo51 -> nodo49
+	nodo51 -> nodo50
+	nodo52 [label="resta\n5"]
+	nodo52 -> nodo48
+	nodo52 -> nodo51
+	nodo53 [label=4]
+	nodo54 [label=2]
+	nodo55 [label=9]
+	nodo56 [label=2]
+	nodo57 [label="raiz\n3"]
+	nodo57 -> nodo55
+	nodo57 -> nodo56
+	nodo58 [label="potencia\n8"]
+	nodo58 -> nodo54
+	nodo58 -> nodo57
+	nodo59 [label="multiplicacion\n32"]
+	nodo59 -> nodo53
+	nodo59 -> nodo58
+	nodo60 [label=90]
+	nodo61 [label="seno\n0.89"]
+	nodo61 -> nodo60
+	nodo62 [label=5.32]
+	nodo63 [label="suma\n6"]
+	nodo63 -> nodo61
+	nodo63 -> nodo62
+}

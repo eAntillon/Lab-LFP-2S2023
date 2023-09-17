@@ -1,0 +1,16 @@
+digraph G {
+
+    // Atributos de los nodos
+    f1 [label="suma \n 9.82"];
+    f2 [label="4.5"];   
+    f3 [label="5.32"];   
+    f4 [label="9.82"];   
+    f5 [label="9.82"];   
+
+    f1 -> f2 
+    f1 -> f3
+
+    f4 -> f5
+}
+
+
